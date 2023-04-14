@@ -60,6 +60,9 @@ const styles = StyleSheet.create({
   },
   formInputContainer: {
     marginBottom: 70,
+    ...StyleSheet.absoluteFill,
+    zIndex: -1,
+    justifyContent: "center",
   },
   closeButtonContainer: {
     backgroundColor: "#FF6C00",
