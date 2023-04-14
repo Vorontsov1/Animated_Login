@@ -24,6 +24,14 @@ export default function App() {
     }
   });
 
+  const clossButtonCcontainerStyle = useAnimatedStyle(() => { 
+      const interpolation = interpolate(imagePosition.value, [0, 1], [180, 360]);
+    return {
+      opacity: withTiming(imagePosition.value === 1 ? 0 : 1, { duration: 700 }),
+      transform: [{ rotate: withTiming(interpolation + "deg", { duration: 700 })}],
+    }
+  })
+
   const loginHandler = () => { 
     imagePosition.value = 0;
   }
@@ -47,9 +55,13 @@ export default function App() {
             clipPath="url(#clipPathId)"
           />
         </Svg>
-        <View style={styles.closeButtonContainer}>
-          <Text style={styles.closeButtonText}>X</Text>
-        </View>
+
+        <Animated.View style={[styles.closeButtonContainer, clossButtonCcontainerStyle]}>
+          <Text
+            onPress={() => (imagePosition.value = 1)}
+            style={styles.closeButtonText}>X</Text>
+        </Animated.View>
+        
       </Animated.View>
 
       <View style={styles.buttonContainer}>
