@@ -14,7 +14,15 @@ export default function App() {
     return {
       transform: [{ translateY: withTiming(interpolation,{duration:700})}],
     };
-   });
+  });
+  
+  const buttonAnimatedStyle = useAnimatedStyle(() => { 
+    const interpolation = interpolate(imagePosition.value, [0, 1], [250, 0])
+    return {
+      opacity: withTiming(imagePosition.value, { duration: 700 }),
+      transform: [{ translateY: withTiming(interpolation, { duration: 700 }) }],
+    }
+  });
 
   const loginHandler = () => { 
     imagePosition.value = 0;
@@ -26,16 +34,16 @@ export default function App() {
   
   return (
     <View style={styles.container}>
-      <Animated.View style={[StyleSheet.absoluteFill, imageAnimatedStyle ]}>
-        <Svg height={height} width={width}>
+      <Animated.View style={[StyleSheet.absoluteFill, imageAnimatedStyle]}>
+        <Svg height={height + 100} width={width}>
           <ClipPath id="clipPathId">
-            <Ellipse cx={width / 2}  rx={height} ry={height} />
+            <Ellipse cx={width / 2} rx={height} ry={height + 100} />
           </ClipPath>
           <Image
             href={require("./assets/login-background.jpg")}
-            width={width}
-            height={height}
-            preserveAspectRatio="xMidYMid slice" 
+            width={width + 100}
+            height={height + 100}
+            preserveAspectRatio="xMidYMid slice"
             clipPath="url(#clipPathId)"
           />
         </Svg>
@@ -45,12 +53,16 @@ export default function App() {
       </Animated.View>
 
       <View style={styles.buttonContainer}>
-        <Pressable style={styles.button} onPress={loginHandler}>
-          <Text style={styles.buttonText}>LOG IN</Text>
-        </Pressable>
-        <Pressable style={styles.button}  onPress={registerHandler}>
-          <Text style={styles.buttonText}>REGISTER</Text>
-        </Pressable>
+        <Animated.View style={buttonAnimatedStyle}>
+          <Pressable style={styles.button} onPress={loginHandler}>
+            <Text style={styles.buttonText}>LOG IN</Text>
+          </Pressable>
+        </Animated.View>
+        <Animated.View style={buttonAnimatedStyle}>
+          <Pressable style={styles.button} onPress={registerHandler}>
+            <Text style={styles.buttonText}>REGISTER</Text>
+          </Pressable>
+        </Animated.View>
         {/* <View style={styles.formInputContainer}>
           <TextInput
             placeholder="Email"
