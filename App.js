@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, Dimensions, TextInput, Pressable } from "react-native";
 import styles from "./styles";
-import Svg, { Image } from "react-native-svg";
+import Svg, { Image, Ellipse, ClipPath } from "react-native-svg";
 import Animated, {useSharedValue,  useAnimatedStyle,  interpolate, withTiming } from "react-native-reanimated";
 
 
@@ -12,11 +12,15 @@ export default function App() {
   const imageAnimatedStyle = useAnimatedStyle(() => {
     const interpolation = interpolate(imagePosition.value, [0, 1], [-height / 2, 0]);
     return {
-      transform: [{ translateY: withTiming(interpolation,{duration:1000})}],
+      transform: [{ translateY: withTiming(interpolation,{duration:700})}],
     };
    });
 
   const loginHandler = () => { 
+    imagePosition.value = 0;
+  }
+
+  const registerHandler = () => {
     imagePosition.value = 0;
   }
   
@@ -24,11 +28,15 @@ export default function App() {
     <View style={styles.container}>
       <Animated.View style={[StyleSheet.absoluteFill, imageAnimatedStyle ]}>
         <Svg height={height} width={width}>
+          <ClipPath id="clipPathId">
+            <Ellipse cx={width / 2}  rx={height} ry={height} />
+          </ClipPath>
           <Image
             href={require("./assets/login-background.jpg")}
             width={width}
             height={height}
             preserveAspectRatio="xMidYMid slice" 
+            clipPath="url(#clipPathId)"
           />
         </Svg>
         <View style={styles.closeButtonContainer}>
@@ -40,7 +48,7 @@ export default function App() {
         <Pressable style={styles.button} onPress={loginHandler}>
           <Text style={styles.buttonText}>LOG IN</Text>
         </Pressable>
-        <Pressable style={styles.button}>
+        <Pressable style={styles.button}  onPress={registerHandler}>
           <Text style={styles.buttonText}>REGISTER</Text>
         </Pressable>
         {/* <View style={styles.formInputContainer}>
